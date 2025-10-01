@@ -1,0 +1,118 @@
+.all-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Roboto', sans-serif;
+    padding: 0; 
+    box-sizing: border-box; 
+    overflow: hidden; 
+    height: 100vh;
+  }
+  
+  body{
+    margin: 0;
+  }
+  
+  .container-box {
+    background-color: rgb(250, 250, 255);
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.7);
+    width: 400px;
+    max-width: 90%;
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  
+  /* Heading and paragraph styling */
+  .container-box h1 {
+    text-align: center;
+    color: #343a40;
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    font-weight: bold;
+  }
+  
+  .container-box p {
+    text-align: center;
+    color: #6c757d;
+    font-size: 0.9rem;
+    margin-top: 1.5rem; 
+    
+  }
+  
+  .container-box input {
+    width: 90%;
+    padding: 0.8rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid #ebedef;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+    margin-top: 0.5rem;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.25);
+  }
+  
+  .container-box input:focus {
+    border-color: #FFCFB3;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.25);
+  }
+  
+  .container-box .buton {
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+    width: 100%; 
+    margin-top: 1rem; 
+  }
+
+  .container-box .btn-blue {
+    margin-top: 2rem; 
+    width: 30%;
+    padding: 0.8rem;
+    background-color: #E78F81;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .container-box .btn-blue:hover {
+    background-color: #FFCFB3;
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+  }
+  
+  .container-box a {
+    text-decoration: none;
+    color: #007bff;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+  }
+  
+  .container-box a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+  }
+  
+  @keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+  }
+  
+  .custom-error-message {
+    background-color: #ffdddd;
+    border-left: 5px solid #e60000;
+    color: #a80000;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    border-radius: 6px;
+    font-weight: 500;
+}

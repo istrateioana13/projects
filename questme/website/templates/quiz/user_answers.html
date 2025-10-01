@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <h2>{{ username }}'s answers for {{ quiz.title_quiz }}</h2>
+
+    <div class="answers-list">
+        {% for answer, question in answer_details %}
+            <div class="answer-card {% if answer.is_right %}correct{% else %}incorrect{% endif %}">
+                <div class="question-info">
+                    <h4>{{ question.title_question }}</h4>
+                   
+                    <p class="user-answer">{{ answer.answer_text }}</p> 
+                    <span class="status">
+                        {% if answer.is_right %}
+                            Correct
+                        {% else %}
+                            Incorrect
+                        {% endif %}
+                    </span> 
+                </div>
+            </div>
+        {% empty %}
+            <p>No answers found for this user.</p>
+        {% endfor %}
+    </div>
+</div>
+<link rel="stylesheet" href="{% static 'css/user-answer.css' %}">
+
+
+{% endblock %}

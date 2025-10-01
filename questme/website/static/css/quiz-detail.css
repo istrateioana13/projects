@@ -1,0 +1,101 @@
+.quiz-details {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 20px;
+}
+
+.question {
+    margin-bottom: 2rem;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: white;
+}
+
+.answers {
+    margin-top: 1rem;
+}
+
+.answer {
+    padding: 0.5rem;
+    margin: 0.5rem 0;
+    border-left: 4px solid #ddd;
+}
+
+.answer.correct {
+    border-left-color: #4CAF50;
+    background-color: #f8fff8;
+}
+
+.correct-label {
+    color: #4CAF50;
+    font-weight: bold;
+    margin-left: 1rem;
+}
+
+.download-btn {
+    display: inline-block;
+    background-color: #B82132;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+  
+}
+
+.download-btn:hover {
+    background-color: #a11c2c;
+}
+
+.download-btn.large {
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+}
+
+.quiz-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center; 
+    gap: 23rem; 
+   
+}
+.button-group {
+    display: flex;
+    gap: 1rem; 
+    margin-top: 1rem;
+    margin-left: 200px;
+}
+
+
+.edit-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #B82132;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.download-btn,
+.edit-btn {
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+
+.edit-btn:hover {
+    background-color: #9a1a34;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.download-btn:active,
+.edit-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 3px rgba(0,0,0,0.2);
+}

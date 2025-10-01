@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{% static 'logo.png' %}" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>{% block title %}Quest Me{% endblock %}</title>
+
+
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        .menu-link {
+            background-color: #f8f8f8;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            width: 80px;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s ease; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            cursor: pointer;
+        }
+
+        .menu-link a {
+            color: #B82132;
+            text-decoration: none;
+            font-weight: bold;
+            display: block; 
+        }
+
+        .menu-link:hover {
+            background-color: #e0e0e0;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .menu-link:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 3px rgba(0,0,0,0.2);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+        }
+        
+        .header-bar {
+            position: relative;
+            width: 100%;
+            padding: 1rem;
+            text-align: center;
+        }
+        
+        .menu-container {
+            position: absolute;
+            left: 1rem;
+            top: 70%;
+            padding: 1rem;
+            transform: translateY(-50%);
+            
+        }
+        
+        .title-container h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+        
+        .menu-toggle {
+            font-size: 2rem;
+            color: #B82132;
+            cursor: pointer;
+           
+        }
+        
+        .menu-items {
+            display: block;
+            position: absolute;
+            top: 3.5rem;
+            left: 0;
+        }
+        
+        .menu-content {
+            display: flex;
+            flex-direction: row;
+            gap: 0.5rem;
+            background-color: transparent;
+            padding: 0.5rem;
+           
+        }
+        
+        .menu-link {
+            background-color: #f8f8f8;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            transition: background-color 0.3s;
+            width: 80px;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        
+        .menu-link a {
+            color: #B82132;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .menu-link:hover {
+            background-color: #e0e0e0;
+        }
+        
+        #menu-checkbox:checked ~ .menu-items .menu-link {
+            animation: fadeInUp 0.5s forwards;
+        }
+       
+        #menu-checkbox:checked ~ .menu-items .menu-link:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+        #menu-checkbox:checked ~ .menu-items .menu-link:nth-child(2) {
+            animation-delay: 0.3s;
+        }
+        #menu-checkbox:checked ~ .menu-items .menu-link:nth-child(3) {
+            animation-delay: 0.5s;
+        }
+        
+        .menu-link.fade-out {
+            animation: fadeOut 0.5s forwards;
+        }
+    </style>
+</head>
+<body style="background-image: url('{% static 'question.png' %}'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+    {% if not hide_menu %}
+    {% block menu %}
+    <div class="header-bar">
+        <div class="menu-container">
+          
+            <input type="checkbox" id="menu-checkbox" style="display: none;">
+            <label for="menu-checkbox" class="menu-toggle">
+                <i class="fa-solid fa-bars"></i>
+            </label>
+
+            <div class="menu-items">
+                <div class="menu-content">
+                    <div class="menu-link">
+                        <a href="{% url 'home' %}"><i class="fa-solid fa-house"></i> Home</a>
+                    </div>
+                    <div class="menu-link">
+                        <a href="{% url 'create_quiz' %}"><i class="fa-solid fa-plus"></i> Create</a>
+                    </div>
+                    <div class="menu-link">
+                        <a href="{% url 'logout' %}"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="title-container">
+            {% block page_title %}{% endblock %}
+        </div>
+        {% endblock %}
+        {% endif %}
+    </div>
+    <div class="container mt-4">
+        {% block content %}{% endblock %}
+    </div>
+
+    <script>
+        const checkbox = document.getElementById('menu-checkbox');
+        const menuLinks = document.querySelectorAll('.menu-link');
+
+        let previousState = checkbox.checked;
+
+        checkbox.addEventListener('change', function () {
+          
+            if (!checkbox.checked && previousState) {
+                menuLinks.forEach(link => {
+                    link.classList.add('fade-out');
+                 
+                    link.addEventListener('animationend', function handler() {
+                        link.classList.remove('fade-out');
+                        link.removeEventListener('animationend', handler);
+                    });
+                });
+            }
+            previousState = checkbox.checked;
+        });
+    </script>
+</body>
+</html>

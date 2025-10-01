@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="form-wrapper">
+<form method="POST">
+{% csrf_token %}
+<div id="questionSection" class="form-box scrollable-area">
+    <h2>Edit Quiz</h2>
+
+    <div class="input-section">
+        <label class="text-create" for="title">Quiz Title</label>
+        <input
+            type="text"
+            name="title"
+            id="title"
+            class="create_qa"
+            value="{{ quiz.title_quiz }}"
+            required
+        />
+    </div>
+
+    <div id="questionsContainer">
+            {% for question in quiz_data %}
+                <div class="input-section question-block">
+                <input type="hidden" name="questions[{{ forloop.counter0 }}][id]" value="{{ question.id }}">
+                <label class="text-create">Question</label>
+                <div class="input-group">
+                    <input class="create_qa" type="text" name="questions[{{ forloop.counter0 }}][text]" value="{{ question.text }}" required />
+                    <button type="button" class="add-button add-question-button">+</button>
+                    <button type="button" class="delete-button delete-question-button">-</button>
+                </div>
+                <div class="answers-container">
+                    {% for answer in question.answers %}
+                        <div class="input-group">
+                            <input type="checkbox" class="is_right" name="questions[{{ forloop.parentloop.counter0 }}][correct_answers][]" value="{{ forloop.counter0 }}" {% if answer.is_right %}checked{% endif %} />
+                            <input class="create_qa" type="text" name="questions[{{ forloop.parentloop.counter0 }}][answers][]" value="{{ answer.text }}" required />
+                            <button type="button" class="add-button add-answer-button">+</button>
+                            <button type="button" class="delete-button delete-answer-button">-</button>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <button class="create-button" type="submit">Save Changes</button>
+</div>
+</form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('questionsContainer').addEventListener('click', function (e) {
+        if (e.target.classList.contains('add-question-button')) {
+            addQuestion();
+        }
+
+        if (e.target.classList.contains('add-answer-button')) {
+            const questionBlock = e.target.closest('.question-block');
+            const index = Array.from(document.getElementsByClassName('question-block')).indexOf(questionBlock);
+            addAnswer(questionBlock, index);
+        }
+
+        if (e.target.classList.contains('delete-question-button')) {
+            e.target.closest('.question-block').remove();
+            updateQuestionButtons();
+        }
+
+        if (e.target.classList.contains('delete-answer-button')) {
+            const questionBlock = e.target.closest('.question-block');
+            const answersContainer = questionBlock.querySelector('.answers-container');
+            e.target.closest('.input-group').remove();
+            updateAnswerButtons(answersContainer, questionBlock);
+        }
+    });
+
+    updateQuestionButtons();
+    document.querySelectorAll('.question-block').forEach((block, index) => {
+        const answersContainer = block.querySelector('.answers-container');
+        updateAnswerButtons(answersContainer, block);
+    });
+});
+
+function addQuestion() {
+    const questionsContainer = document.getElementById("questionsContainer");
+    const questionCount = questionsContainer.getElementsByClassName("question-block").length;
+
+    const questionBlock = document.createElement("div");
+    questionBlock.classList.add("input-section", "question-block");
+    questionBlock.innerHTML = `
+        <input type="hidden" name="questions[${questionCount}][id]" value="">
+        <label class="text-create">Question</label>
+        <div class="input-group">
+            <input class="create_qa" type="text" name="questions[${questionCount}][text]" placeholder="Question" required />
+            <button type="button" class="add-button add-question-button">+</button>
+            <button type="button" class="delete-button delete-question-button">-</button>
+        </div>
+        <div class="answers-container">
+            <div class="input-group">
+                <input type="checkbox" class="is_right" name="questions[${questionCount}][correct_answers][]" value="0" />
+                <input class="create_qa" type="text" name="questions[${questionCount}][answers][]" placeholder="Answer" required />
+                <button type="button" class="add-button add-answer-button">+</button>
+            </div>
+        </div>
+    `;
+    questionsContainer.appendChild(questionBlock);
+
+    updateQuestionButtons();
+    const answersContainer = questionBlock.querySelector('.answers-container');
+    updateAnswerButtons(answersContainer, questionBlock);
+}
+
+function addAnswer(questionBlock, questionIndex) {
+    const answersContainer = questionBlock.querySelector('.answers-container');
+    const answerCount = answersContainer.getElementsByClassName("input-group").length;
+
+    const answerInput = document.createElement("div");
+    answerInput.classList.add("input-group");
+    answerInput.innerHTML = `
+        <input type="checkbox" class="is_right" name="questions[${questionIndex}][correct_answers][]" value="${answerCount}" />
+        <input class="create_qa" type="text" name="questions[${questionIndex}][answers][]" placeholder="Answer" required />
+        <button type="button" class="add-button add-answer-button">+</button>
+        <button type="button" class="delete-button delete-answer-button">-</button>
+    `;
+    answersContainer.appendChild(answerInput);
+
+    updateAnswerButtons(answersContainer, questionBlock);
+}
+
+function updateQuestionButtons() {
+    const questions = document.querySelectorAll('.question-block');
+
+    questions.forEach((block, index) => {
+        const addBtn = block.querySelector('.add-question-button');
+        const deleteBtn = block.querySelector('.delete-question-button');
+        addBtn.style.display = (index === questions.length - 1) ? 'inline-block' : 'none';
+
+        if (deleteBtn) {
+            deleteBtn.style.display = 'inline-block';
+        }
+    });
+}
+
+
+function updateAnswerButtons(answersContainer, questionBlock) {
+    const answerGroups = answersContainer.querySelectorAll('.input-group');
+
+    answerGroups.forEach((group, index) => {
+        const addBtn = group.querySelector('.add-answer-button');
+        const delBtn = group.querySelector('.delete-answer-button');
+        if (addBtn) addBtn.style.display = (index === answerGroups.length - 1) ? 'inline-block' : 'none';
+
+        if (delBtn) delBtn.style.display = 'inline-block';
+    });
+}
+
+</script>
+
+<link rel="stylesheet" href="{% static 'css/quiz_edit.css' %}">
+{% endblock %}

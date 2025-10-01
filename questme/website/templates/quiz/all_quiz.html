@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block page_title %}
+<div class="title">
+    <h1> Quizzes Created </h1>
+</div>
+{% endblock %}
+
+{% block content %}
+    <div class="quiz-container" >
+        {% for quiz in quizzes %}
+            <div class="card">
+                <h3>{{ quiz.title_quiz }}</h3>
+
+                <div class="button-group">
+                    <form action="{% url 'quiz_detail' quiz.id %}" method="get">
+                        <button type="submit" class="read-button">View</button>
+                    </form>
+
+                    <form action="{% url 'filled_by' quiz.id %}" method="get">
+                        <button type="submit" class="read-button">Answers</button>
+                    </form>
+
+                    <form action="{% url 'delete_quiz' quiz.id %}" method="POST" onsubmit="return confirm('Are you sure?');">
+                        {% csrf_token %}
+                        <button type="submit" class="read-button">Delete</button>
+                    </form>
+                </div>
+            </div>
+        {% empty %}
+            <p>No quizzes found.</p>
+        {% endfor %}
+    </div>
+
+
+    <link rel="stylesheet" href="{% static 'css/allquizz.css' %}">
+{% endblock %}

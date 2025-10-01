@@ -1,0 +1,49 @@
+.container-home {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    height: 80vh;
+    background: transparent;
+  }
+
+.custom-button-home {
+    width: 268px;
+    height: 87px;
+    background-color: #B82132;
+    color: white;
+    font-size: 24px;
+    font-family: Arial, sans-serif;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 
+      0 4px 6px rgba(0, 0, 0, 0.2), 
+      inset 0 4px 6px rgba(255, 255, 255, 0.2); 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease;
+    text-decoration: none;
+  }
+  
+.custom-button-home:hover {
+    transform: translateY(-2px);
+  }
+  
+  .success-message {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #d4edda;
+    color: #155724;
+    padding: 12px 24px;
+    border: 1px solid #28a745;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-weight: 500;
+    z-index: 9999;
+    display: none;
+    transition: opacity 0.3s ease;
+}

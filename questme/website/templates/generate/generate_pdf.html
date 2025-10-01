@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="all-container">
+    <h1>AI Quiz Generator</h1>
+
+    <p id="loadingMessage" style="display: none; color: black;">Generating quiz... please wait.</p>
+    <form id="pdfForm" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input  class="pdf" type="file" name="pdf" id="pdfInput" accept=".pdf" required>
+        <button type="button" onclick="generateFromPDF()">Generate</button>
+    </form>
+    
+
+    <div id="quizFormContainer" style="display: none;">
+        <h2>Quiz Details</h2>
+        <form method="post" action="/save_quiz/">  
+            {% csrf_token %}
+            <label for="quizTitle">Quiz Title</label>
+            <input type="text" name="title" placeholder="Quiz Title" required><br><br>
+
+            <div id="questionsContainer">
+              
+            </div>
+
+            <button type="submit">Submit Quiz</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function generateFromPDF() {
+        const formData = new FormData(document.getElementById('pdfForm'));
+    
+        // Show loading message
+        document.getElementById('loadingMessage').style.display = 'block';
+    
+        fetch('/generate_quiz_from_pdf/', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Hide loading message
+            document.getElementById('loadingMessage').style.display = 'none';
+    
+            if (data.error) {
+                alert("Error: " + data.error);
+                console.error(data.raw_output);
+                return;
+            }
+            populateQuizForm(data);
+        })
+        .catch(error => {
+            // Hide loading message even on error
+            document.getElementById('loadingMessage').style.display = 'none';
+            console.error('Error:', error);
+        });
+    }
+    
+
+    function populateQuizForm(data) {
+        document.getElementById('quizFormContainer').style.display = 'block';
+    
+        document.querySelector('input[name="title"]').value = data.title;
+    
+        const container = document.getElementById('questionsContainer');
+        container.innerHTML = '';
+    
+        data.questions.forEach((q, qIndex) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question-block');  
+    
+            questionDiv.innerHTML = `
+                <input type="text" class="question-input" name="questions[${qIndex}][text]" value="${q.question}" required><br>
+            `;
+    
+            q.options.forEach((option, optionIndex) => {
+                const isChecked = option === q.answer ? 'checked' : '';
+                questionDiv.innerHTML += `
+                <div class="answer-option">
+                    <input type="checkbox" name="questions[${qIndex}][correct_answers][]" value="${optionIndex}" ${isChecked}>
+                    <input type="text" class="answer-input" name="questions[${qIndex}][answers][]" value="${option}" required>
+                </div>
+                `;
+            });
+    
+            container.appendChild(questionDiv);
+        });
+    }
+    
+</script>
+
+<link rel="stylesheet" href="{% static 'css/generate-pdf.css' %}">
+
+{% endblock %}

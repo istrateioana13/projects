@@ -1,0 +1,28 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 30px; }
+        h1 { text-align: center; margin-bottom: 25px; }
+        .question { margin-bottom: 20px; }
+        .answers { margin-left: 20px; }
+        .answer { margin-bottom: 0.5px; line-height: 1.2;}
+    </style>
+</head>
+<body>
+    <h1>{{ quiz.title_quiz }}</h1>
+
+    {% for question in quiz.questions.all %}
+        <div class="question">
+            <h3>{{ forloop.counter }}. {{ question.title_question }}</h3>
+            <div class="answers">
+                {% for answer in question.answers.all %}
+                <div class="answer">{{ forloop.counter}}.{{ answer.answer_text }}</div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
+</body>
+</html>

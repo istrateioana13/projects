@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="all-container" style="background-image: url('{% static 'question.png' %}'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+    <div class="container-box">
+        <h1>Login</h1>
+        {% if error_message %}
+            <div  class="custom-error-message">
+                {{ error_message }}
+            </div>
+        {% endif %}
+        
+        <form method="POST">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="id_email">Email</label>
+                <input type="email" name="email" id="id_email" class="form-control" placeholder="Enter your email">
+                {% if form.email.errors %}
+                    <div class="error">
+                        {% for error in form.email.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label for="id_password">Password</label>
+                <input type="password" name="password" id="id_password" class="form-control" placeholder="Enter your password">
+                {% if form.password.errors %}
+                    <div class="error">
+                        {% for error in form.password.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        
+            <div class="buton">
+                <button type="submit" class="btn-blue">Login</button>
+            </div>
+        </form>
+        
+        <p>Not a member? <a href="{% url 'register' %}">Register.</a></p>
+</div>
+
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+
+{% endblock %}

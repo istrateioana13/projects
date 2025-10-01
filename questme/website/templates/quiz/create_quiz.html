@@ -1,0 +1,221 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<form method="post" action="{% url 'save_quiz' %}" id="quizFormContainer">
+    {% csrf_token %}
+    <div class="container-create">
+
+        <div id="quizForm" class="form-box-create">
+            <h2>New Quiz</h2>
+            <label class="text-create">Quiz Title</label>
+            <input class="title-create" type="text" placeholder="Title" name="title" required />
+            <div class="checkbox-group-create">
+                <input type="checkbox" id="anonymous" name="anonymous" />
+                <label class="text-create" for="anonymous">Anonim</label>
+            </div>
+            <div class="buttons">
+            <button type="button" id="startButton">Get Started</button>
+
+        
+            <div class="or-divider">
+                <div class="line"></div>
+                <span class="or-text">OR</span>
+                <div class="line"></div>
+            </div>
+
+            <button type="button" onclick="window.location.href='{% url 'generate_ai' %}'">Generate with AI</button>
+            <button type="button" onclick="window.location.href='{% url 'generate_pdf' %}'">Generate from PDF</button>
+            </div>
+        </div>
+
+        <div id="questionSection" class="form-box scrollable-area" style="display: none;">
+            <h2>Create Quiz</h2>
+            <div id="questionsContainer">
+                <div class="input-section question-block">
+                    <label class="text-create">Question</label>
+                    <div class="input-group">
+                        <input class="create_qa" type="text" name="questions[0][text]" placeholder="Question" required />
+                        <button type="button" class="add-button add-question-button">+</button>
+                    </div>
+                    <div class="answers-container">
+                        <div class="input-group">
+                            <input type="checkbox" class="is_right" name="questions[0][correct_answers][]" value="0" />
+                            <input class="create_qa" type="text" name="questions[0][answers][]" placeholder="Answer" required />
+                            <button type="button" class="add-button add-answer-button">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="create-button" type="submit">Create Quiz</button>
+        </div>
+
+    </div>
+</form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        const startButton = document.getElementById('startButton');
+        startButton.addEventListener('click', function () {
+            console.log("Start button clicked"); // Add this line
+            document.getElementById("quizForm").style.display = "none";
+            document.getElementById("questionSection").style.display = "block";
+        });
+
+        document.getElementById('questionsContainer').addEventListener('click', function (e) {
+
+            if (e.target.classList.contains('add-question-button')) {
+                addQuestion();
+            }
+
+            if (e.target.classList.contains('add-answer-button')) {
+                const questionBlock = e.target.closest('.question-block');
+                const index = Array.from(document.getElementsByClassName('question-block')).indexOf(questionBlock);
+                addAnswer(questionBlock, index);
+            }
+
+            if (e.target.classList.contains('delete-question-button')) {
+                e.target.closest('.question-block').remove();
+                updateQuestionButtons();
+            }
+
+            if (e.target.classList.contains('delete-answer-button')) {
+                const questionBlock = e.target.closest('.question-block');
+                const answersContainer = questionBlock.querySelector('.answers-container');
+                e.target.closest('.input-group').remove();
+                updateAnswerButtons(answersContainer, questionBlock);
+            }
+        });
+
+        updateQuestionButtons(); // run once on load for initial question
+        const initialAnswersContainer = document.querySelector('.answers-container');
+        const initialQuestionBlock = document.querySelector('.question-block');
+        updateAnswerButtons(initialAnswersContainer, initialQuestionBlock);
+    });
+
+    function addQuestion() {
+        const questionsContainer = document.getElementById("questionsContainer");
+        const questionCount = questionsContainer.getElementsByClassName("question-block").length;
+
+        const questionBlock = document.createElement("div");
+        questionBlock.classList.add("input-section", "question-block");
+        questionBlock.innerHTML = `
+            <label class="text-create">Question</label>
+            <div class="input-group">
+                <input class="create_qa" type="text" name="questions[${questionCount}][text]" placeholder="Question" required />
+                <button type="button" class="add-button add-question-button">+</button>
+                <button type="button" class="delete-button delete-question-button">-</button>
+            </div>
+            <div class="answers-container">
+                <div class="input-group">
+                    <input type="checkbox" class="is_right" name="questions[${questionCount}][correct_answers][]" value="0" />
+                    <input class="create_qa" type="text" name="questions[${questionCount}][answers][]" placeholder="Answer" required />
+                    <button type="button" class="add-button add-answer-button">+</button>
+                </div>
+            </div>
+        `;
+        questionsContainer.appendChild(questionBlock);
+
+        updateQuestionButtons();
+        const answersContainer = questionBlock.querySelector('.answers-container');
+        updateAnswerButtons(answersContainer, questionBlock);
+    }
+
+    function addAnswer(questionBlock, questionIndex) {
+        const answersContainer = questionBlock.querySelector('.answers-container');
+        const answerCount = answersContainer.getElementsByClassName("input-group").length;
+
+        const answerInput = document.createElement("div");
+        answerInput.classList.add("input-group");
+        answerInput.innerHTML = `
+            <input type="checkbox" class="is_right" name="questions[${questionIndex}][correct_answers][]" value="${answerCount}" />
+            <input class="create_qa" type="text" name="questions[${questionIndex}][answers][]" placeholder="Answer" required />
+            <button type="button" class="add-button add-answer-button">+</button>
+            <button type="button" class="delete-button delete-answer-button">-</button>
+        `;
+        answersContainer.appendChild(answerInput);
+
+        updateAnswerButtons(answersContainer, questionBlock);
+    }
+
+    function updateQuestionButtons() {
+        const questions = document.querySelectorAll('.question-block');
+
+        questions.forEach((block, index) => {
+            const addBtn = block.querySelector('.add-question-button');
+            const deleteBtn = block.querySelector('.delete-question-button');
+
+            // Plus button only for last question
+            if (index === questions.length - 1) {
+                addBtn.style.display = 'inline-block';
+            } else {
+                addBtn.style.display = 'none';
+            }
+
+            // Minus button only if not the first question
+            if (index > 0) {
+                if (!deleteBtn) {
+                    const newDelBtn = document.createElement('button');
+                    newDelBtn.type = "button";
+                    newDelBtn.className = "delete-button delete-question-button";
+                    newDelBtn.textContent = "-";
+                    block.querySelector('.input-group').appendChild(newDelBtn);
+                } else {
+                    deleteBtn.style.display = 'inline-block';
+                }
+            } else {
+                if (deleteBtn) deleteBtn.style.display = 'none';
+            }
+        });
+    }
+
+    function updateAnswerButtons(answersContainer, questionBlock) {
+        const answerGroups = answersContainer.querySelectorAll('.input-group');
+
+        answerGroups.forEach((group, index) => {
+            let addBtn = group.querySelector('.add-answer-button');
+            let delBtn = group.querySelector('.delete-answer-button');
+
+            // Plus button only for last answer
+            if (index === answerGroups.length - 1) {
+                if (!addBtn) {
+                    addBtn = document.createElement('button');
+                    addBtn.type = 'button';
+                    addBtn.className = 'add-button add-answer-button';
+                    addBtn.textContent = '+';
+                    group.appendChild(addBtn);
+                } else {
+                    addBtn.style.display = 'inline-block';
+                }
+            } else {
+                if (addBtn) addBtn.style.display = 'none';
+            }
+
+            // Minus button for all answers except the first
+            if (index > 0) {
+                if (!delBtn) {
+                    delBtn = document.createElement('button');
+                    delBtn.type = 'button';
+                    delBtn.className = 'delete-button delete-answer-button';
+                    delBtn.textContent = '-';
+                    group.appendChild(delBtn);
+                } else {
+                    delBtn.style.display = 'inline-block';
+                }
+            } else {
+                if (delBtn) delBtn.style.display = 'none';
+            }
+        });
+
+        // After changing answers, update the question plus/minus just in case
+        updateQuestionButtons();
+    }
+
+</script>
+
+
+<link rel="stylesheet" href="{% static 'css/create-quizz.css' %}">
+
+{% endblock %}

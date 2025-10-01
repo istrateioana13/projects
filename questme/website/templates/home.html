@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div id="successMessage" class="success-message" style="display: none;">
+    Quiz saved successfully!
+</div>
+
+<div class="container-home">
+    <a href="{% url 'create_quiz' %}" class="custom-button-home">New Quiz</a>
+    <a href="{% url 'all_quiz' %}" class="custom-button-home">All Quizzes</a>
+
+</div>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('saved') === '1') {
+            const msg = document.getElementById('successMessage');
+            msg.style.display = 'block';
+            msg.classList.add('show');
+
+            setTimeout(() => {
+                msg.style.display = 'none';
+            }, 3000);
+        }
+    });
+</script>
+
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}

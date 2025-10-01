@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="all-container"> 
+    <h1>AI Quiz Generator</h1>
+
+    <p id="loadingMessage" style="display: none; color: black;">Generating quiz... please wait.</p>
+    <input type="text" id="quizPrompt" placeholder="Describe your quiz. E.g.: European Cities." required>
+    <button type="button" onclick="generateQuiz()">Generate</button>
+
+    <div id="quizFormContainer" style="display: none;">
+        <h2>Quiz Details</h2>
+        <form method="post" action="/save_quiz/">  
+            {% csrf_token %}
+            <label for="quizTitle">Quiz Title</label>
+            <input type="text" name="title" placeholder="Quiz Title" required><br><br>
+
+            <div id="questionsContainer">
+              
+            </div>
+
+            <button type="submit">Submit Quiz</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function generateQuiz() {
+        const prompt = document.getElementById('quizPrompt').value;
+        document.getElementById('loadingMessage').style.display = 'block';
+    
+        fetch('/generate_quiz/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({ prompt: prompt })
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('loadingMessage').style.display = 'none'; 
+            if (data.error) {
+                alert('Error: ' + data.error);
+                return;
+            }
+            populateQuizForm(data);
+        })
+        .catch(error => {
+            document.getElementById('loadingMessage').style.display = 'none'; 
+            console.error('Error:', error);
+        });
+    }
+
+    function populateQuizForm(data) {
+        document.getElementById('quizFormContainer').style.display = 'block';
+    
+        document.querySelector('input[name="title"]').value = data.title;
+    
+        const container = document.getElementById('questionsContainer');
+        container.innerHTML = '';
+    
+        data.questions.forEach((q, qIndex) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question-block');  
+    
+            questionDiv.innerHTML = `
+                <input type="text" class="question-input" name="questions[${qIndex}][text]" value="${q.question}" required><br>
+            `;
+    
+            q.options.forEach((option, optionIndex) => {
+                const isChecked = option === q.answer ? 'checked' : '';
+                questionDiv.innerHTML += `
+                <div class="answer-option">
+                    <input type="checkbox" name="questions[${qIndex}][correct_answers][]" value="${optionIndex}" ${isChecked}>
+                    <input type="text" class="answer-input" name="questions[${qIndex}][answers][]" value="${option}" required>
+                </div>
+                `;
+            });
+    
+            container.appendChild(questionDiv);
+        });
+    }
+    
+</script>
+
+<link rel="stylesheet" href="{% static 'css/generate_ai.css' %}">
+
+{% endblock %}

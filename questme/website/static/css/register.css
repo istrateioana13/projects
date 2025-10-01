@@ -1,0 +1,245 @@
+.all-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+body{
+  margin: 0;
+}
+
+.container-box {
+  background-color: rgb(250, 250, 255);
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.7);
+  width: 400px;
+  max-width: 90%;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.container-box h1 {
+  text-align: center;
+  color: #343a40;
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+.container-box p {
+  text-align: center;
+  color: #6c757d;
+  font-size: 0.9rem;
+  margin-top: 1.5rem;
+}
+
+.container-box input {
+  width: 90%;
+  padding: 0.8rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+  margin-top: 0.5rem;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.25);
+}
+
+.container-box input:focus {
+  border-color: #FFCFB3;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.container-box .buton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.container-box .btn-blue {
+  margin-top: 2rem;
+  width: 30%;
+  padding: 0.8rem;
+  background-color: #E78F81;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.container-box .btn-blue:hover {
+  background-color: #FFCFB3;
+  box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+}
+
+.container-box a {
+  text-decoration: none;
+  color: #007bff;
+  font-size: 0.9rem;
+  transition: color 0.3s ease;
+}
+
+.container-box a:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+      transform: translateY(-20px);
+  }
+  to {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  backdrop-filter: blur(3px);
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-content {
+  background-color: #fff;
+  margin: 15% auto;
+  padding: 30px;
+  border-radius: 12px;
+  border: none;
+  width: 80%;
+  max-width: 400px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  position: relative;
+  animation: slideUp 0.4s ease-out;
+  overflow: hidden;
+}
+
+@keyframes slideUp {
+  from { 
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to { 
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, #B82132, #e74c3c);
+}
+
+.modal-content h3 {
+  margin-top: 10px;
+  margin-bottom: 15px;
+  color: #333;
+  font-size: 22px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.modal-content p {
+  color: #666;
+  text-align: center;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+#verificationForm {
+  text-align: center;
+  margin-top: 20px;
+}
+
+#verificationCode {
+  width: 100%;
+  padding: 12px 15px;
+  margin-bottom: 20px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+#verificationCode:focus {
+  border-color: #B82132;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(184, 33, 50, 0.2);
+}
+
+#verificationForm button {
+  background-color: #B82132;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+#verificationForm button:hover {
+  background-color: #9a1a34;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(154, 26, 52, 0.3);
+}
+
+#verificationForm button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(154, 26, 52, 0.3);
+}
+
+#verificationMessage {
+  margin-top: 15px;
+  padding: 10px;
+  border-radius: 6px;
+  text-align: center;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+#verificationMessage.success {
+  background-color: rgba(46, 204, 113, 0.1);
+  color: #27ae60;
+  border: 1px solid rgba(46, 204, 113, 0.3);
+}
+
+#verificationMessage.error {
+  background-color: rgba(231, 76, 60, 0.1);
+  color: #e74c3c;
+  border: 1px solid rgba(231, 76, 60, 0.3);
+}

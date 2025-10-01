@@ -1,0 +1,146 @@
+/* Move the container up and center it */
+.all-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;  /* Start at the top */
+    align-items: center;
+    min-height: 100vh;
+    padding-top: 50px;  /* Push down from the top a bit */
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0);
+}
+
+/* Page Title */
+h1 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    color: black;  /* Change to black */
+    text-shadow: none;  /* Remove the previous white text shadow */
+}
+
+/* Prompt input and button */
+#quizPrompt {
+    width: 40%;  /* Shorter width */
+    padding: 26px;  /* Taller height */
+    font-size: 1em;
+    margin: 10px 0;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    padding: 12px 25px;
+    font-size: 1em;
+    border: none;
+    background-color: #B82132;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #a11c2c;
+}
+
+/* Quiz form container */
+#quizFormContainer {
+    width: 1000px;
+    height: 80vh;
+    background-color: white;
+    padding: 22px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;  /* Change this from hidden to auto */
+}
+
+/* Ensure the form takes full height and allows scrolling inside questions */
+#quizFormContainer form {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    overflow: hidden;  /* Important to contain scroll area */
+}
+
+/* Title label */
+#quizFormContainer label {
+    font-size: 1em;
+    font-weight: bold;
+    margin-bottom: 5px;
+    text-align: left;
+}
+
+/* Title input */
+#quizFormContainer input[name="title"] {
+    width: 80%;
+    padding: 20px;
+    font-size: 1em;
+    border: 1px solid #aaa;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+/* Scrollable questions area */
+#questionsContainer {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding-right: 10px;
+    width: 100%;
+}
+
+/* Each question block */
+#questionsContainer .question-block {
+    margin-bottom: 30px;
+}
+
+/* Question input */
+.question-input {
+    width: 80%;
+    padding: 20px;
+    font-size: 1em;
+    margin-bottom: 12px;
+    border: 1px solid #bbb;
+    border-radius: 4px;
+}
+
+/* Answer option */
+.answer-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+/* Bigger checkbox */
+.answer-option input[type="checkbox"] {
+    transform: scale(1.4);
+}
+
+/* Answer input */
+.answer-input {
+    flex-grow: 1;
+    padding: 18px;
+    font-size: 1em;
+    border: 1px solid #bbb;
+    border-radius: 4px;
+}
+
+/* Submit button */
+#quizFormContainer button[type="submit"] {
+    background-color: #B82132;
+    font-size: 1em;
+    padding: 14px 24px;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+#quizFormContainer button[type="submit"]:hover {
+    background-color: #a11c2c;
+}
+
+

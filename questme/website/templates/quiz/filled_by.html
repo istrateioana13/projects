@@ -1,0 +1,226 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+   
+    <div class="quiz-title-container">
+        <h2>{{ quiz.title_quiz }}</h2>
+        <button id="openChartBtn" class="view-chart-btn">View Stats</button>
+    </div>
+
+ 
+    <div id="chartModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Answer Distribution</h3>
+            <div id="questionSelectorContainer"></div>
+            <canvas id="answerChart"></canvas>
+        </div>
+    </div>
+
+    <div class="user-list">
+        {% for user, score in users_with_scores %}
+            <div class="user-card">
+                <a href="{% url 'user_answers' quiz.id user %}" class="user-link">
+                    <p>{{ user }} - {{ score }}/{{ quiz.question_count }} </p>
+                </a>
+            </div>
+        {% empty %}
+            <p>No users have completed this quiz yet.</p>
+        {% endfor %}
+    </div>
+</div>
+
+<link rel="stylesheet" href="{% static 'css/filled-by.css' %}">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const modal = document.getElementById("chartModal");
+        const btn = document.getElementById("openChartBtn");
+        const span = document.getElementsByClassName("close")[0];
+        let chart, questionsData;
+    
+        function getRandomColor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+    
+        btn.onclick = () => {
+            modal.style.display = "block";
+    
+            fetch("{% url 'quiz_answer_distribution' quiz.id %}")
+                .then(res => res.json())
+                .then(data => {
+                    questionsData = data.map(q => ({
+                        ...q,
+                        color: getRandomColor()
+                    }));
+                    if (!document.getElementById('questionSelectorContainer')) {
+                        const selectorContainer = document.createElement('div');
+                        selectorContainer.id = 'questionSelectorContainer';
+                        selectorContainer.style.margin = '20px 0';
+                        selectorContainer.style.display = 'flex';
+                        selectorContainer.style.flexWrap = 'wrap';
+                        selectorContainer.style.gap = '10px';
+                        selectorContainer.style.justifyContent = 'center';
+                        
+                        const chartContainer = document.querySelector('.modal-content');
+                        chartContainer.insertBefore(selectorContainer, document.getElementById('answerChart'));
+                    }
+                    
+                    renderQuestionButtons(questionsData);
+                    createChart(questionsData[0]);
+                });
+        };
+    
+        span.onclick = () => modal.style.display = "none";
+        window.onclick = e => { if (e.target == modal) modal.style.display = "none"; };
+    
+        function renderQuestionButtons(data) {
+            const container = document.getElementById('questionSelectorContainer');
+            container.innerHTML = "";
+            
+            data.forEach((q, i) => {
+                const btn = document.createElement('div');
+                btn.style.display = 'flex';
+                btn.style.alignItems = 'center';
+                btn.style.cursor = 'pointer';
+                btn.style.padding = '8px 12px';
+                btn.style.borderRadius = '4px';
+                btn.style.backgroundColor = '#f5f5f5';
+                btn.style.transition = 'all 0.2s';
+                
+                btn.onmouseover = () => {
+                    btn.style.backgroundColor = '#e0e0e0';
+                };
+                btn.onmouseout = () => {
+                    btn.style.backgroundColor = '#f5f5f5';
+                };
+            
+                const colorIndicator = document.createElement('div');
+                colorIndicator.style.width = '20px';
+                colorIndicator.style.height = '20px';
+                colorIndicator.style.backgroundColor = q.color;
+                colorIndicator.style.marginRight = '8px';
+                colorIndicator.style.borderRadius = '4px';
+                
+                const questionText = document.createElement('span');
+                questionText.textContent = q.question.length > 30 ? 
+                    q.question.substring(0, 30) + '...' : q.question;
+                questionText.title = q.question; 
+                
+                btn.appendChild(colorIndicator);
+                btn.appendChild(questionText);
+                
+                btn.addEventListener('click', () => createChart(q));
+                container.appendChild(btn);
+            });
+        }
+
+        function createChart(question) {
+            const ctx = document.getElementById('answerChart').getContext('2d');
+            const labels = question.answers.map(a => a.text);
+            const counts = question.answers.map(a => a.count);
+            
+            const dataset = {
+                label: `Answers: ${question.question}`,
+                data: counts,
+                backgroundColor: question.answers.map(() => question.color),
+                borderColor: question.answers.map(() => '#333'),
+                borderWidth: 1,
+                hoverBackgroundColor: question.answers.map(() => '#333'),
+                hoverBorderColor: question.answers.map(() => question.color)
+            };
+    
+            if (chart) {
+              
+                chart.data.labels = labels;
+                chart.data.datasets = [dataset];
+                chart.options.plugins.title.text = question.question;
+                chart.update();
+            } else {
+              
+                chart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [dataset]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: question.question,
+                                font: {
+                                    size: 16
+                                },
+                                padding: {
+                                    top: 10,
+                                    bottom: 20
+                                }
+                            },
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return `Count: ${context.raw}`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: { 
+                                title: { 
+                                    display: true, 
+                                    text: 'Answer Options',
+                                    font: {
+                                        weight: 'bold'
+                                    }
+                                },
+                                ticks: {
+                                    autoSkip: false,
+                                    maxRotation: 45,
+                                    minRotation: 45
+                                }
+                            },
+                            y: { 
+                                beginAtZero: true, 
+                                title: { 
+                                    display: true, 
+                                    text: 'Number of Answers',
+                                    font: {
+                                        weight: 'bold'
+                                    }
+                                },
+                                ticks: {
+                                    precision: 0
+                                }
+                            }
+                        },
+                        animation: {
+                            duration: 500
+                        }
+                    }
+                });
+            }
+        }
+    span.onclick = function () {
+        modal.style.display = "none";
+    };
+
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    };
+});
+</script>
+{% endblock %}

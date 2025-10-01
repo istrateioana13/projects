@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <div class="quiz-details">
+        <div class="quiz-header">
+            <h1>{{ quiz.title_quiz }}</h1>
+            <div class="button-group">
+                <a href="{% url 'edit_quiz' quiz.id %}" class="edit-btn">Edit</a>
+                <a href="{% url 'quiz_pdf' quiz.id %}" class="download-btn" target="_blank">Download PDF</a>
+            </div>            
+        </div>   
+
+        {% for question in quiz.questions.all %}
+            <div class="question">
+                <h3>Intrebarea {{ forloop.counter }}: {{ question.title_question }}</h3>
+                <div class="answers">
+                    {% for answer in question.answers.all %}
+                        <div class="answer {% if answer.is_right %}correct{% endif %}">
+                            {{ answer.answer_text }}
+                            {% if answer.is_right %}<span class="correct-label">Corect</span>{% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <link rel="stylesheet" href="{% static 'css/quiz-detail.css' %}">
+{% endblock %}

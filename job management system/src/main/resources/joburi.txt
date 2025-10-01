@@ -1,0 +1,3 @@
+16; HR; Cautam HR Intern; Timisoara; Atos
+26; Inginer; Cautam inginer experimentat; Bacau; Hella
+78; Inginer; Cautaum inginer; Deva; AllMoto

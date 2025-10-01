@@ -36,7 +36,7 @@
   - React Native (Android & iOS)
 
 - **Database:**
-  - SQLite (lightweight relational database)
+  - SQLite 
 
 ## Purpose
 

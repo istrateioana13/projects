@@ -1,0 +1,26 @@
+Ecuatia de gradul II
+
+Forma generala a ecuatiei de gradul al doilea este:
+    ax^2 + bx + c = 0
+unde:
+    x este variabila, iar a, b, si c constantele (a este diferit de 0). Daca constanta a = 0, atunci ecuatia devine o ecuatie liniara.
+
+Constantele a, b, si c sunt denumite astfel:
+
+    a, coeficientul termenului patratic
+    b, coeficient termenului liniar
+    c, termen constant sau termen liber.
+
+Orice ecuatie de gradul al doilea are doua solutii sau radacini reale/complexe. Ele se pot exprima printr-o egalitate de forma:
+
+Radacinile reale:
+
+x{1,2} = ( (-b) +- sqrt(b^2 - 4ac) ) / 2a
+
+Radacinile complexe:
+
+x{1,2} = ( (-b) +- i * sqrt( -(b^2 - 4ac) ) ) / 2a
+
+Expresia de sub radical ( b^2 - 4ac ) se numeste discriminant si este notat de obicei cu delta si are rolul de a evidentia natura numerelor radacini ecuatiei.
+
+Daca delta > 0, cele doua radacini sunt reale si diferite. Daca delta = 0, cele doua radacini sunt reale si confundate (egale intre ele). Daca delta < 0, ecuatia are radacini complexe.

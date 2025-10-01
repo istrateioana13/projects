@@ -1,0 +1,17 @@
+
+Această aplicație necesită crearea unui cont sau logarea într-un cont deja existent pentru a putea continua. Vă mulțumim pentru înțelegere și vă asigurăm că acest pas este esențial pentru a vă oferi
+o experiență personalizată și sigură.
+
+Dorim să vă aducem la cunoștință că aplicația noastră rezolvă ecuații ale căror delta
+este mai mic decât zero.
+
+După apăsarea butonului Start, vi se vor cere coeficienții ecuației de gradul al doilea.
+
+Introducerea acestor date ne permite să calculăm rapid și precis rădăcinile ecuației. De asemenea, după calcularea
+rădăcinilor, aveți posibilitatea de a genera graficul funcției, oferindu-vă astfel o reprezentare vizuală a soluțiilor obținute.
+
+Aplicația noastră este destinată elevilor și pasionaților de matematică care doresc să își verifice
+cunoștințele legate de tematica aplicatiei.
+
+Ne dorim să vă oferim un instrument util și educativ, care să vă ajute să înțelegeți
+mai bine conceptele de bază ale ecuațiilor de gradul al doilea.

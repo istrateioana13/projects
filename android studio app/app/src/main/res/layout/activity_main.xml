@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="@drawable/wallpaper">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:padding="5dp">
+
+        <Button
+            android:id="@+id/buttonStart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:textSize="18sp"
+            android:backgroundTint="@color/your_button_color"
+            android:textColor="@color/your_text_color"
+            android:text="Start" />
+
+        <Button
+            android:id="@+id/buttonReguli"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:padding="5dp"
+            android:textSize="18sp"
+            android:backgroundTint="@color/your_button_color"
+            android:textColor="@color/your_text_color"
+            android:text="Reguli" />
+
+        <Button
+            android:id="@+id/buttonHelp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:padding="5dp"
+            android:textSize="18sp"
+            android:backgroundTint="@color/your_button_color"
+            android:textColor="@color/your_text_color"
+            android:text="Help" />
+
+    </LinearLayout>
+
+</RelativeLayout>

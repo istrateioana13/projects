@@ -1,0 +1,66 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="60dp"
+        android:gravity="center"
+        android:text="Ofera coeficientii ecuatiei de gradul al doilea"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/editTextA"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="28dp"
+        android:padding="8dp"
+        android:hint="Introduce coeficientul a"
+        android:inputType="numberDecimal|numberSigned" />
+
+    <EditText
+        android:id="@+id/editTextB"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="28dp"
+        android:padding="8dp"
+        android:hint="Introduce coeficientul b"
+        android:inputType="numberDecimal|numberSigned" />
+
+    <EditText
+        android:id="@+id/editTextC"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="16dp"
+        android:padding="8dp"
+        android:hint="Introduce coeficientul c"
+        android:inputType="numberDecimal|numberSigned"/>
+
+    <EditText
+    android:id="@+id/editTextD"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:layout_marginBottom="16dp"
+    android:padding="8dp"
+    android:hint="Introduce coeficientul D"
+    android:inputType="numberDecimal|numberSigned"/>
+
+    <Button
+        android:id="@+id/buttonCalculate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Calculate"
+        android:layout_marginTop="16dp" />
+
+
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

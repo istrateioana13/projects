@@ -1,0 +1,39 @@
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/textViewRoot1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="Root 1: "
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textViewRoot2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Root 2: "
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textViewRoot3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Root 3: "
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/buttonGenerateGraph"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Genereaza graficul"
+        android:layout_marginTop="16dp" />
+
+</LinearLayout>
